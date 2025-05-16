@@ -58,7 +58,7 @@ public class JwtUtil {
     }
 
 
-    @Value("${jwt.secret}")
+    @Value("${app.jwtSecret}")
     private String secret;
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);

@@ -1,6 +1,7 @@
 package com.citizen.engagement_system_be.exceptions;
 
 import com.citizen.engagement_system_be.payloads.ErrorResponse;
+import lombok.NoArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

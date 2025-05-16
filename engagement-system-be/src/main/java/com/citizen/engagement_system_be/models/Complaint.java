@@ -27,11 +27,11 @@ public class Complaint {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name= "user_id", nullable = false)
+    @JoinColumn(name= "category_id", nullable = false)
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name= "user_id", nullable = false)
+    @JoinColumn(name= "agency_id", nullable = false)
     private Agency agency;
 
     @Enumerated(EnumType.STRING)
