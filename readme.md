@@ -28,7 +28,7 @@ A Spring Boot-based system for managing citizen complaints and feedback on publi
 1. Clone the repository:
 
 ```bash
-git clone [your-repository-url]
+git clone [https://github.com/mahingaRodin/-citizen-engagement-system-Rwanda-ICT-Chamber]
 ```
 
 2. Configure the database in `application.properties`:
