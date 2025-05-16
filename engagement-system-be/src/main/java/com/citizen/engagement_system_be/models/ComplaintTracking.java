@@ -14,6 +14,62 @@ public class ComplaintTracking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Complaint getComplaint() {
+        return complaint;
+    }
+
+    public void setComplaint(Complaint complaint) {
+        this.complaint = complaint;
+    }
+
+    public ComplaintStatus getPreviousStatus() {
+        return previousStatus;
+    }
+
+    public void setPreviousStatus(ComplaintStatus previousStatus) {
+        this.previousStatus = previousStatus;
+    }
+
+    public ComplaintStatus getNewStatus() {
+        return newStatus;
+    }
+
+    public void setNewStatus(ComplaintStatus newStatus) {
+        this.newStatus = newStatus;
+    }
+
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public LocalDateTime getChangedAt() {
+        return changedAt;
+    }
+
+    public void setChangedAt(LocalDateTime changedAt) {
+        this.changedAt = changedAt;
+    }
+
     @ManyToOne
     @JoinColumn(name = "complaint_id", nullable = false)
     private Complaint complaint;

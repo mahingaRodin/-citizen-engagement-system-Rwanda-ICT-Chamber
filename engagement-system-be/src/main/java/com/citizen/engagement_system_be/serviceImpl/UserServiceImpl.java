@@ -1,5 +1,6 @@
 package com.citizen.engagement_system_be.serviceImpl;
 
+import com.citizen.engagement_system_be.enums.NotificationType;
 import com.citizen.engagement_system_be.repository.UserRepository;
 import com.citizen.engagement_system_be.services.UserService;
 import org.springframework.security.core.userdetails.UserDetailsService;

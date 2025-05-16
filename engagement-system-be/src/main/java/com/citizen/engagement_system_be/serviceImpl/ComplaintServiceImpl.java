@@ -1,0 +1,148 @@
+package com.citizen.engagement_system_be.serviceImpl;
+
+import com.citizen.engagement_system_be.dtos.ComplaintDTO;
+import com.citizen.engagement_system_be.dtos.search.ComplaintSearchDTO;
+import com.citizen.engagement_system_be.dtos.search.SearchResultDTO;
+import com.citizen.engagement_system_be.enums.ComplaintStatus;
+import com.citizen.engagement_system_be.enums.NotificationType;
+import com.citizen.engagement_system_be.exceptions.ResourceNotFoundException;
+import com.citizen.engagement_system_be.fileHandling.File;
+import com.citizen.engagement_system_be.fileHandling.FileStorageService;
+import com.citizen.engagement_system_be.mapper.ComplaintMapper;
+import com.citizen.engagement_system_be.models.*;
+import com.citizen.engagement_system_be.repository.*;
+import com.citizen.engagement_system_be.services.ComplaintService;
+import com.citizen.engagement_system_be.services.NotificationService;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+
+@Service
+public class ComplaintServiceImpl implements ComplaintService {
+    private final ComplaintRepository complaintRepository;
+    private final UserRepository userRepository;
+    private final AgencyRepository agencyRepository;
+    private final CategoryRepository categoryRepository;
+    private final AttachmentRepository attachmentRepository;
+    private final NotificationService notificationService;
+    private final FileStorageService fileStorageService;
+    private final ComplaintMapper complaintMapper;
+
+    @Value("${uploads.directory}")
+    private String uploadDir;
+
+    public ComplaintServiceImpl(ComplaintRepository complaintRepository, UserRepository userRepository, AgencyRepository agencyRepository, CategoryRepository categoryRepository, AttachmentRepository attachmentRepository, NotificationService notificationService, FileStorageService fileStorageService, ComplaintMapper complaintMapper) {
+        this.complaintRepository = complaintRepository;
+        this.userRepository = userRepository;
+        this.agencyRepository = agencyRepository;
+        this.categoryRepository = categoryRepository;
+        this.attachmentRepository = attachmentRepository;
+        this.notificationService = notificationService;
+        this.fileStorageService = fileStorageService;
+        this.complaintMapper = complaintMapper;
+    }
+
+    @Override
+    @Transactional
+    public ComplaintDTO createComplaint(ComplaintDTO complaint, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        Category category = categoryRepository.findById(complaint.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category Not Found"));
+
+        Agency agency = agencyRepository.findById(complaint.getAgencyId())
+                .orElseThrow(() -> new RuntimeException("Agency Not Found"));
+
+        Complaint c = new Complaint();
+        c.setTitle(complaint.getTitle());
+        complaint.setDescription(complaint.getDescription());
+        complaint.setLocation(complaint.getLocation());
+        complaint.setUserId(userId);
+        complaint.setCategoryId(complaint.getCategoryId());
+        complaint.setAgencyId(agency.getId());
+        complaint.setStatus(ComplaintStatus.OPEN);
+        complaint.setPriority(complaint.getPriority());
+
+        Complaint savedComplaint = complaintRepository.save(c);
+        //send notification to the agency
+        notificationService.sendNotification(
+                agency.getId(),
+                NotificationType.COMPLAINT_CREATED,
+                "New Complaint Received: " + complaint.getTitle(),
+                savedComplaint.getId()
+        );
+        return complaint;
+    }
+
+    @Override
+    public ComplaintDTO getComplaint(Long complaintId) {
+        return null;
+    }
+
+    @Override
+    public ComplaintDTO updateComplaint(Long userId, ComplaintDTO complaint) {
+        return null;
+    }
+
+    @Override
+    public void deleteComplaint(Long complaintId) {
+
+    }
+
+    @Override
+    public SearchResultDTO<ComplaintDTO> searchComplaints(ComplaintSearchDTO searchDTO) {
+        return null;
+    }
+
+    @Override
+    public ComplaintDTO updateStatus(Long id, String status) {
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Complaint not found"));
+
+        ComplaintStatus newStatus = ComplaintStatus.valueOf(status.toUpperCase());
+        complaint.setStatus(newStatus);
+
+        if (newStatus == ComplaintStatus.RESOLVED) {
+            complaint.setResolvedAt(LocalDateTime.now());
+        }
+
+        Complaint updatedComplaint = complaintRepository.save(complaint);
+
+        // Notify user about status change
+        notificationService.sendNotification(
+                complaint.getUserId().getId(),
+                NotificationType.STATUS_CHANGED,
+                "Your complaint status has been updated to: " + status,
+                complaint.getId()
+        );
+
+        return complaintMapper.toDTO(updatedComplaint);
+    }
+
+    @Override
+    public ComplaintDTO assignToAgency(Long id, Long agencyId) {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void addAttachment(Long complaintId, MultipartFile file) {
+        Complaint c = complaintRepository.findById(complaintId)
+                .orElseThrow(() -> new RuntimeException("Complaint Not Found"));
+
+        String filePath = fileStorageService.save(file,uploadDir);
+        Attachment a = new Attachment();
+        a.setComplaint(c);
+        a.setFile((File) file);
+        a.setUploadedAt(LocalDateTime.now());
+        attachmentRepository.save(a);
+    }
+
+    @Override
+    public void removeAttachment(Long complaintId, Long attachmentId) {
+
+    }
+}

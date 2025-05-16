@@ -15,14 +15,13 @@ public class FileStorageService {
     @Value("${uploads.directory}")
     private String root;
 
-    public String save(MultipartFile file, String directory, String filename) {
+    public String save(MultipartFile file, String directory) {
         try {
             Path path = Paths.get(directory);
-            Files.copy(file.getInputStream(), path.resolve(Objects.requireNonNull(filename)));
-            return path.toString() + "/" + filename;
         } catch (Exception e) {
             e.printStackTrace();
             throw new AppException(e.getMessage());
         }
+        return directory;
     }
 }

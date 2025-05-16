@@ -28,4 +28,29 @@ public class Attachment {
     protected void onCreate() {
         uploadedAt = LocalDateTime.now();
 }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Complaint getComplaint() {
+        return complaint;
+    }
+    public void setComplaint(Complaint complaint) {
+        this.complaint = complaint;
+    }
+    public File getFile() {
+        return file;
+    }
+    public void setFile(File file) {
+        this.file = file;
+    }
+    public LocalDateTime getUploadedAt() {
+        return uploadedAt;
+    }
+    public void setUploadedAt(LocalDateTime uploadedAt) {
+        this.uploadedAt = uploadedAt;
+    }
 }

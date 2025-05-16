@@ -38,4 +38,48 @@ public class Notification {
         createdAt = LocalDateTime.now();
         isRead = false;
     }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public User getUserId() {
+        return userId;
+    }
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+    public NotificationType getType() {
+        return type;
+    }
+    public void setType(NotificationType type) {
+        this.type = type;
+    }
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    public Complaint getComplaint() {
+        return complaint;
+    }
+    public void setComplaint(Complaint complaint) {
+        this.complaint = complaint;
+    }
+    public boolean isRead() {
+        return isRead;
+    }
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }

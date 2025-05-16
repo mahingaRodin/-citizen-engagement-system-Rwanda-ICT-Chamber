@@ -63,4 +63,82 @@ public class Complaint {
         updatedAt = LocalDateTime.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public User getUserId() {
+        return userId;
+    }
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+    public Category getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(Category categoryId) {
+        this.categoryId = categoryId;
+    }
+    public Agency getAgencyId() {
+        return agencyId;
+    }
+    public void setAgencyId(Agency agencyId) {
+        this.agencyId = agencyId;
+    }
+    public ComplaintStatus getStatus() {
+        return status;
+    }
+    public void setStatus(ComplaintStatus status) {
+        this.status = status;
+    }
+    public ComplaintPriority getPriority() {
+        return priority;
+    }
+    public void setPriority(ComplaintPriority priority) {
+        this.priority = priority;
+    }
+    public ComplaintType getType() {
+        return type;
+    }
+    public void setType(ComplaintType type) {
+        this.type = type;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    public LocalDateTime getResolvedAt() {
+        return resolvedAt;
+    }
+    public void setResolvedAt(LocalDateTime resolvedAt) {
+        this.resolvedAt = resolvedAt;
+    }
 }
