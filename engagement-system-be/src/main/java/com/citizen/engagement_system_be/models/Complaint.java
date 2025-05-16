@@ -4,11 +4,9 @@ import com.citizen.engagement_system_be.enums.ComplaintPriority;
 import com.citizen.engagement_system_be.enums.ComplaintStatus;
 import com.citizen.engagement_system_be.enums.ComplaintType;
 import jakarta.persistence.*;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "complaints")
 public class Complaint {
