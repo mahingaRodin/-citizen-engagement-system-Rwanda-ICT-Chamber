@@ -24,15 +24,15 @@ public class Complaint {
 
     @ManyToOne
     @JoinColumn(name= "user_id", nullable = false)
-    private User user;
+    private User userId;
 
     @ManyToOne
     @JoinColumn(name= "category_id", nullable = false)
-    private Category category;
+    private Category categoryId;
 
     @ManyToOne
     @JoinColumn(name= "agency_id", nullable = false)
-    private Agency agency;
+    private Agency agencyId;
 
     @Enumerated(EnumType.STRING)
     private ComplaintStatus status;

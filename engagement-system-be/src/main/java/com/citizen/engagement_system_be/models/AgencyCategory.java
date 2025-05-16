@@ -18,7 +18,7 @@ public class AgencyCategory {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private Category category_id;
 
     @Column(nullable = false)
     private boolean isPrimary;
