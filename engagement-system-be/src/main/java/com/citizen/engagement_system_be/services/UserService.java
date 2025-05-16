@@ -1,4 +1,4 @@
-package com.citizen.engagement_system_be.services.jwt;
+package com.citizen.engagement_system_be.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
