@@ -20,7 +20,7 @@ public class ComplaintMapper {
         dto.setStatus(ComplaintStatus.OPEN);
         dto.setPriority(ComplaintPriority.MEDIUM);
         dto.setLocation(complaint.getLocation());
-        dto.setUserId(complaint.getUserId().getId());
+        dto.setUser(complaint.getUserId());
         dto.setCategoryId(complaint.getCategoryId().getId());
         dto.setAgencyId(complaint.getAgencyId().getId());
         dto.setCreatedAt(complaint.getCreatedAt());
