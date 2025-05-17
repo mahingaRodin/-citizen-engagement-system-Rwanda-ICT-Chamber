@@ -1,9 +1,7 @@
 package com.citizen.engagement_system_be.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "agencies")
 public class Agency {
@@ -13,6 +11,10 @@ public class Agency {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(columnDefinition = "category_id",nullable = false)
+    private Category categoryId;
 
     private String description;
     private String contactEmail;
@@ -47,5 +49,11 @@ public class Agency {
     }
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
+    }
+    public Category getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(Category categoryId) {
+        this.categoryId = categoryId;
     }
 }
