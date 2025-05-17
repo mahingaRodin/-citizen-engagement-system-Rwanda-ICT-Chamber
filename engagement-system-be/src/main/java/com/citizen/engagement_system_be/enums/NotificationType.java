@@ -10,7 +10,12 @@ public enum NotificationType {
     NEW_RESPONSE("New Response"),
     STATUS_CHANGED("Status Changed"),
     PRIORITY_CHANGED("Priority Changed"),
-    ASSIGNMENT_CHANGED("Assignment Changed");
+    ASSIGNMENT_CHANGED("Assignment Changed"),
+    COMPLAINT_RATED("Complaint Rated"),
+    COMPLAINT_ASSIGNED("Complaint Assigned"),
+    COMPLAINT_REASSIGNED("Complaint Reassigned"),
+    COMPLAINT_ESCALATED("Complaint Escalated"),
+    COMPLAINT_DEESCALATED("Complaint Descaled");
 
     private final String displayName;
 

@@ -10,7 +10,8 @@ public enum ComplaintStatus {
     PENDING_INFORMATION("Pending Information"),
     RESOLVED("Resolved"),
     CLOSED("Closed"),
-    REJECTED("Rejected");
+    REJECTED("Rejected"),
+    ASSIGNED("Assigned");
 
     private final String displayName;
 

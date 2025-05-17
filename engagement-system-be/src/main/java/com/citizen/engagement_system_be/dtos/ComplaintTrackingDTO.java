@@ -1,11 +1,14 @@
 package com.citizen.engagement_system_be.dtos;
 
+import com.citizen.engagement_system_be.models.User;
+
 import java.time.LocalDateTime;
 
 public class ComplaintTrackingDTO {
     private Long id;
     private Long complaintId;
     private String previousStatus;
+    private User user;
     private String newStatus;
     private Long updatedById;
     private String comment;
@@ -65,5 +68,11 @@ public class ComplaintTrackingDTO {
 
     public void setChangedAt(LocalDateTime changedAt) {
         this.changedAt = changedAt;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }

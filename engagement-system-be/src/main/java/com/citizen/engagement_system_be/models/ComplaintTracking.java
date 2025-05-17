@@ -14,6 +14,30 @@ public class ComplaintTracking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "complaint_id", nullable = false)
+    private Complaint complaint;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ComplaintStatus previousStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ComplaintStatus newStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
+
+    private String comment;
+    private LocalDateTime changedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        changedAt = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,12 +70,12 @@ public class ComplaintTracking {
         this.newStatus = newStatus;
     }
 
-    public User getUpdatedBy() {
-        return updatedBy;
+    public User getUserId() {
+        return userId;
     }
 
-    public void setUpdatedBy(User updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     public String getComment() {
@@ -68,29 +92,5 @@ public class ComplaintTracking {
 
     public void setChangedAt(LocalDateTime changedAt) {
         this.changedAt = changedAt;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "complaint_id", nullable = false)
-    private Complaint complaint;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ComplaintStatus previousStatus;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ComplaintStatus newStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User updatedBy;
-
-    private String comment;
-    private LocalDateTime changedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        changedAt = LocalDateTime.now();
     }
 }
