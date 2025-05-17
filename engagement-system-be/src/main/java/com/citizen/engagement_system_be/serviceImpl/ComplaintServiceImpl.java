@@ -15,10 +15,14 @@ import com.citizen.engagement_system_be.services.ComplaintService;
 import com.citizen.engagement_system_be.services.NotificationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
@@ -60,7 +64,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         c.setTitle(complaint.getTitle());
         complaint.setDescription(complaint.getDescription());
         complaint.setLocation(complaint.getLocation());
-        complaint.setUserId(userId);
+        complaint.setUser(user);
         complaint.setCategoryId(complaint.getCategoryId());
         complaint.setAgencyId(agency.getId());
         complaint.setStatus(ComplaintStatus.OPEN);
@@ -75,6 +79,29 @@ public class ComplaintServiceImpl implements ComplaintService {
                 savedComplaint.getId()
         );
         return complaint;
+    }
+
+    @Override
+    @Transactional
+    public SearchResultDTO<ComplaintDTO> getComplaintsByAgencyId(Long agencyId, int page, int size) {
+        if (!agencyRepository.existsById(agencyId)) {
+            throw new ResourceNotFoundException("Agency not found with id: " + agencyId);
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Complaint> complaints = complaintRepository.findByAgencyId(agencyId, pageRequest);
+
+        return new SearchResultDTO<>(
+                complaints.getContent().stream()
+                        .map(complaintMapper::toDTO)
+                        .collect(Collectors.toList()),
+                complaints.getNumber(),
+                complaints.getSize(),
+                complaints.getTotalElements(),
+                complaints.getTotalPages(),
+                complaints.hasNext(),
+                complaints.hasPrevious()
+        );
     }
 
     @Override

@@ -19,6 +19,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     Page<Complaint> findByStatus(ComplaintStatus status, Pageable pageable);
     Page<Complaint> findByPriority(ComplaintPriority priority, Pageable pageable);
 
+    @Query("select c from Complaint c where c.agencyId.id = :agencyId")
+    Page<Complaint> findByAgencyId(@Param("agencyId") long agencyId, Pageable pageable);
+
     @Query("select c from Complaint c where c.agencyId = :agencyId and c.status =: status")
     Page<Complaint> findByAgencyAndStatus(@Param("agencyId") Long agencyId,
                                           @Param("status") ComplaintStatus status,

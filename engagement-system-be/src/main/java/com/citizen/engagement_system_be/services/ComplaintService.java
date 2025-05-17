@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ComplaintService {
     ComplaintDTO createComplaint(ComplaintDTO complaint, Long userId);
+    SearchResultDTO<ComplaintDTO> getComplaintsByAgencyId(Long agencyId, int page, int size);
     ComplaintDTO getComplaint(Long complaintId);
     ComplaintDTO updateComplaint(Long userId, ComplaintDTO complaint);
     void deleteComplaint(Long complaintId);
