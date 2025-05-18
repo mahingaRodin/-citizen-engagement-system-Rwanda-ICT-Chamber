@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/v3/agencies/**").permitAll()
                                 .requestMatchers("/api/v3/user/**").permitAll()
                                 .requestMatchers("/api/v3/categories/**").permitAll()
+                                .requestMatchers("/api/v3/dashboard/**").permitAll()
                                 .requestMatchers("OPTIONS/**").permitAll() // Explicitly allow OPTIONS requests
                                 .requestMatchers(ADMIN_LIST).hasRole("SYSTEM_ADMIN")
                                 .anyRequest().authenticated()

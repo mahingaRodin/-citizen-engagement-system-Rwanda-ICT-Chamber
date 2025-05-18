@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
@@ -74,6 +75,16 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
             @Param("complaintId") Long complaintId,
             @Param("keyword") String keyword,
             Pageable pageable);
+
+
+    @Query("select count(c) from  Complaint c where c.agencyId.id = ?1")
+    long countByAgencyId(Long agencyId);
+
+    @Query("select c from  Complaint c where c.agencyId.id = ?1")
+    List<Complaint> findAllByAgencyId(Long agencyId);
+
+    @Query("select c from Complaint c where c.agencyId.id = ?1 ORDER BY c.createdAt DESC ")
+    List<Complaint> findTop10ByAgencyIdOrderByCreatedAtDesc(Long agencyId);
 }
 
 
