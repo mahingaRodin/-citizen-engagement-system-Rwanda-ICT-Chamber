@@ -1,6 +1,4 @@
 package com.citizen.engagement_system_be.payloads;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

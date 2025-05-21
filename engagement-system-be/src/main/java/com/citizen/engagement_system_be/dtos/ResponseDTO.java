@@ -1,9 +1,8 @@
 package com.citizen.engagement_system_be.dtos;
 
-import com.citizen.engagement_system_be.enums.ResponseType;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+
+import com.citizen.engagement_system_be.enums.ResponseType;
 
 public class ResponseDTO {
     private Long id;

@@ -1,7 +1,6 @@
 package com.citizen.engagement_system_be.dtos;
 
 import com.citizen.engagement_system_be.fileHandling.File;
-import lombok.Data;
 
 
 public class AttachmentCreateDTO {

@@ -1,21 +1,10 @@
 package com.citizen.engagement_system_be.serviceImpl;
 
-import com.citizen.engagement_system_be.dtos.ComplaintDTO;
-import com.citizen.engagement_system_be.dtos.search.ComplaintSearchDTO;
-import com.citizen.engagement_system_be.dtos.search.SearchResultDTO;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import com.citizen.engagement_system_be.enums.ComplaintPriority;
-import com.citizen.engagement_system_be.enums.ComplaintStatus;
-import com.citizen.engagement_system_be.enums.ComplaintType;
-import com.citizen.engagement_system_be.enums.NotificationType;
-import com.citizen.engagement_system_be.exceptions.ResourceNotFoundException;
-import com.citizen.engagement_system_be.fileHandling.File;
-import com.citizen.engagement_system_be.fileHandling.FileStorageService;
-import com.citizen.engagement_system_be.mapper.ComplaintMapper;
-import com.citizen.engagement_system_be.models.*;
-import com.citizen.engagement_system_be.repository.*;
-import com.citizen.engagement_system_be.services.ComplaintService;
-import com.citizen.engagement_system_be.services.NotificationService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,9 +12,30 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.citizen.engagement_system_be.dtos.ComplaintDTO;
+import com.citizen.engagement_system_be.dtos.search.ComplaintSearchDTO;
+import com.citizen.engagement_system_be.dtos.search.SearchResultDTO;
+import com.citizen.engagement_system_be.enums.ComplaintStatus;
+import com.citizen.engagement_system_be.enums.ComplaintType;
+import com.citizen.engagement_system_be.enums.NotificationType;
+import com.citizen.engagement_system_be.exceptions.ResourceNotFoundException;
+import com.citizen.engagement_system_be.fileHandling.File;
+import com.citizen.engagement_system_be.fileHandling.FileStorageService;
+import com.citizen.engagement_system_be.mapper.ComplaintMapper;
+import com.citizen.engagement_system_be.models.Agency;
+import com.citizen.engagement_system_be.models.Attachment;
+import com.citizen.engagement_system_be.models.Category;
+import com.citizen.engagement_system_be.models.Complaint;
+import com.citizen.engagement_system_be.models.User;
+import com.citizen.engagement_system_be.repository.AgencyRepository;
+import com.citizen.engagement_system_be.repository.AttachmentRepository;
+import com.citizen.engagement_system_be.repository.CategoryRepository;
+import com.citizen.engagement_system_be.repository.ComplaintRepository;
+import com.citizen.engagement_system_be.repository.UserRepository;
+import com.citizen.engagement_system_be.services.ComplaintService;
+import com.citizen.engagement_system_be.services.NotificationService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
@@ -55,44 +65,50 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     @Transactional
     public boolean createComplaint(ComplaintDTO complaint) {
-        Optional<Category> category = categoryRepository.findById(complaint.getCategoryId());
-        Optional<Agency> agency = agencyRepository.findById(complaint.getAgencyId().getId());
-
-//        Agency agency = agencyRepository.findById(complaint.getAgencyId())
-//                .orElseThrow(() -> new RuntimeException("Agency Not Found"));
-
-
-        if(category.isPresent() && agency.isPresent()) {
-            Complaint compl = new Complaint();
-            compl.setTitle(complaint.getTitle());
-            compl.setDescription(complaint.getDescription());
-            compl.setPriority(ComplaintPriority.MEDIUM);
-            compl.setCreatedAt(LocalDateTime.now());
-            compl.setType(ComplaintType.OTHER);
-            compl.setLocation(complaint.getLocation());
-            compl.setAgencyId(complaint.getAgencyId());
-
-            complaintRepository.save(compl);
-            return true;
+        // Validate required fields
+        if (complaint.getTitle() == null || complaint.getDescription() == null ||
+                complaint.getLocation() == null || complaint.getCategoryId() == null ||
+                complaint.getAgencyId() == null || complaint.getUserId() == null) {
+            System.out.println("Required fields are missing");
+            return false;
         }
 
-//        Complaint c = new Complaint();
-//        c.setTitle(complaint.getTitle());
-//        complaint.setDescription(complaint.getDescription());
-//        complaint.setLocation(complaint.getLocation());
-//        complaint.setCategoryId(complaint.getCategoryId());
-//        complaint.setAgencyId(agency.getId());
-//        complaint.setStatus(ComplaintStatus.OPEN);
-//        complaint.setPriority(complaint.getPriority());
-//
-//        Complaint savedComplaint = complaintRepository.save(c);
-//        //send notification to the agency
-//        notificationService.sendNotification(
-//                agency.getId(),
-//                NotificationType.COMPLAINT_CREATED,
-//                "New Complaint Received: " + complaint.getTitle(),
-//                savedComplaint.getId()
-//        );
+        Optional<Category> category = categoryRepository.findById(complaint.getCategoryId());
+        System.out.println("Category exists: " + category.isPresent());
+        Optional<Agency> agency = agencyRepository.findById(complaint.getAgencyId());
+        System.out.println("Agency exists: " + agency.isPresent());
+        Optional<User> user = userRepository.findById(complaint.getUserId());
+        System.out.println("User exists: " + user.isPresent());
+
+        if(category.isPresent() && agency.isPresent() && user.isPresent()) {
+            try {
+                Complaint compl = new Complaint();
+                compl.setTitle(complaint.getTitle());
+                compl.setDescription(complaint.getDescription());
+                compl.setPriority(complaint.getPriority() != null ? complaint.getPriority() : ComplaintPriority.MEDIUM);
+                compl.setStatus(complaint.getStatus() != null ? complaint.getStatus() : ComplaintStatus.OPEN);
+                compl.setCreatedAt(LocalDateTime.now());
+                compl.setUpdatedAt(LocalDateTime.now());
+                compl.setType(complaint.getType() != null ? ComplaintType.valueOf(complaint.getType()) : ComplaintType.OTHER);
+                compl.setLocation(complaint.getLocation());
+                compl.setAgencyId(agency.get());
+                compl.setCategoryId(category.get());
+                compl.setUserId(user.get());
+
+                if(complaint.getResolvedAt() != null) {
+                    compl.setResolvedAt(complaint.getResolvedAt());
+                }
+
+                complaintRepository.save(compl);
+                return true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid enum value: " + e.getMessage());
+                return false;
+            } catch (Exception e) {
+                System.out.println("Error creating complaint: " + e.getMessage());
+                return false;
+            }
+        }
         return false;
     }
 

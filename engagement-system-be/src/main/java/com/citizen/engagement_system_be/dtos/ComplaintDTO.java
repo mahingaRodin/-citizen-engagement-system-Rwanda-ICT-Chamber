@@ -1,22 +1,30 @@
 package com.citizen.engagement_system_be.dtos;
 
+import java.time.LocalDateTime;
+
 import com.citizen.engagement_system_be.enums.ComplaintPriority;
 import com.citizen.engagement_system_be.enums.ComplaintStatus;
-import com.citizen.engagement_system_be.models.Agency;
-import com.citizen.engagement_system_be.models.User;
-
-import java.time.LocalDateTime;
 
 
 public class ComplaintDTO {
-    private Long id;
-    private String title;
-    private String description;
-    private ComplaintStatus status;
-    private String location;
-    private Long userId;
-    private Long categoryId;
-    private Agency agencyId;
+        private Long id;
+        private String title;
+        private String description;
+        private ComplaintStatus status;
+        private String location;
+        private Long userId;
+        private Long categoryId;
+        private Long agencyId;
+        private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     private ComplaintPriority priority;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -78,11 +86,11 @@ public class ComplaintDTO {
         this.categoryId = categoryId;
     }
 
-    public Agency getAgencyId() {
+    public Long getAgencyId() {
         return agencyId;
     }
 
-    public void setAgencyId(Agency agencyId) {
+    public void setAgencyId(Long agencyId) {
         this.agencyId = agencyId;
     }
 

@@ -1,7 +1,6 @@
 package com.citizen.engagement_system_be.dtos.search;
 
 import com.citizen.engagement_system_be.enums.UserRole;
-import lombok.Data;
 
 public class UserSearchDTO {
     private String name;

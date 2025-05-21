@@ -1,7 +1,5 @@
 package com.citizen.engagement_system_be.dtos;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
 public class NotificationDTO {

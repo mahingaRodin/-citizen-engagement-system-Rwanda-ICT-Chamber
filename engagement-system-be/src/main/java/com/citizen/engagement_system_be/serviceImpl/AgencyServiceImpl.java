@@ -1,5 +1,13 @@
 package com.citizen.engagement_system_be.serviceImpl;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
+
 import com.citizen.engagement_system_be.dtos.AgencyDTO;
 import com.citizen.engagement_system_be.dtos.search.AgencySearchDTO;
 import com.citizen.engagement_system_be.dtos.search.SearchResultDTO;
@@ -11,15 +19,8 @@ import com.citizen.engagement_system_be.repository.AgencyRepository;
 import com.citizen.engagement_system_be.repository.CategoryRepository;
 import com.citizen.engagement_system_be.repository.UserRepository;
 import com.citizen.engagement_system_be.services.AgencyService;
+
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.springframework.data.domain.Sort.*;
 
 @Service
 public class AgencyServiceImpl implements AgencyService {
@@ -108,7 +109,7 @@ public class AgencyServiceImpl implements AgencyService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
-        agency.getCategoryId().setName(category.getName());
+        agency.getCategory().setName(category.getName());
         agencyRepository.save(agency);
 
         return agencyMapper.toDTO(agency);

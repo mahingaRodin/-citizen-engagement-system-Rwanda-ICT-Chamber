@@ -5,7 +5,7 @@ import com.citizen.engagement_system_be.models.Category;
 public class AgencyDTO {
     private Long id;
     private String name;
-    private Category categoryId;
+    private Long categoryId;
     private String description;
     private String contactEmail;
     private String contactPhone;
@@ -49,10 +49,10 @@ public class AgencyDTO {
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
-    public Category getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
-    public void setCategoryId(Category categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 }

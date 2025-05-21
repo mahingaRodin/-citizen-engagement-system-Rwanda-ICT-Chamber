@@ -1,11 +1,8 @@
 package com.citizen.engagement_system_be.dtos.search;
 
-import com.citizen.engagement_system_be.dtos.NotificationDTO;
-import com.citizen.engagement_system_be.dtos.ResponseDTO;
-import lombok.Data;
-import org.springframework.data.domain.Page;
-
 import java.util.List;
+
+import org.springframework.data.domain.Page;
 
 
 public class SearchResultDTO<T> {

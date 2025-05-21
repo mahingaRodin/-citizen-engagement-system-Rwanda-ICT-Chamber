@@ -1,10 +1,9 @@
 package com.citizen.engagement_system_be.dtos.search;
 
+import java.time.LocalDateTime;
+
 import com.citizen.engagement_system_be.enums.ComplaintPriority;
 import com.citizen.engagement_system_be.enums.ComplaintStatus;
-import lombok.Data;
-
-import java.time.LocalDateTime;
 
 public class ComplaintSearchDTO {
     private String title;

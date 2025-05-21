@@ -13,8 +13,8 @@ public class Agency {
     private String name;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "category_id")
-    private Category categoryId;
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     private String description;
     private String contactEmail;
@@ -50,10 +50,10 @@ public class Agency {
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
-    public Category getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
-    public void setCategoryId(Category categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

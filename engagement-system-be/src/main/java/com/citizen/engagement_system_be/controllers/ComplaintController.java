@@ -8,6 +8,7 @@ import com.citizen.engagement_system_be.services.ComplaintService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +24,19 @@ public class ComplaintController {
         this.complaintService = complaintService;
     }
 
-    @Operation(summary = "Uploading a complaint to a certain agency")
+    @Operation(summary = "Upload a complaint to a specific agency")
     @PostMapping("/create")
-    public ResponseEntity<?> uploadComplaint(@RequestBody ComplaintDTO complaintDTO) {
+    public ResponseEntity<String> uploadComplaint(@Valid @RequestBody ComplaintDTO complaintDTO) {
         boolean success = complaintService.createComplaint(complaintDTO);
-        if(success) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+        if (success) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Complaint submitted successfully.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to submit complaint. Please check your input.");
         }
     }
+
 
     @Operation(summary = "Get complaint by id")
     @GetMapping("/{id}")
